@@ -5,24 +5,21 @@
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-text-field
             v-model="form.organizerName"
-            :counter="10"
             label="Minyan Name"
             required
           ></v-text-field>
           <v-text-field
             v-model="form.organizerContact"
-            :counter="10"
             label="Organizer Contact"
             required
           ></v-text-field>
           <v-text-field
             v-model="form.minyanLocation"
-            :counter="10"
             label="Minyan Location"
             required
           ></v-text-field>
           <v-menu
-            ref="menu"
+            ref="menu2"
             v-model="menu2"
             :close-on-content-click="false"
             :nudge-right="40"
@@ -46,7 +43,8 @@
               v-if="menu2"
               v-model="form.minyanTime"
               full-width
-              @click:minute="$refs.menu.save(form.minyanTime)"
+              format="ampm"
+              @click:minute="$refs.menu2.save(form.minyanTime)"
             ></v-time-picker>
           </v-menu>
 
@@ -104,7 +102,7 @@
             :disabled="!valid"
             color="blue"
             class="mr-4"
-            @click="CreateMinyan(this.$refs.form)"
+            @click="CreateMinyan(form)"
           >
             Create Minyan
           </v-btn>
@@ -148,18 +146,7 @@ export default {
       menu2: false,
     };
   },
-  created() {
-    // api.CreateMinyan({
-    //   name: "test minyan from inside app",
-    //   organizerName: "shimon adler",
-    //   organizerContact: "7326065965",
-    //   minyanLocation: "Tel Aviv",
-    //   minyanTime: "10:07:18 GMT-0500 (Central Daylight Time)",
-    //   minyanDate: "Thu Aug 10 2021",
-    //   numberOfAttending: 1,
-    //   canceled: false,
-    // });
-  },
+  created() {},
   methods: {
     CreateMinyan(form) {
       let req = {
@@ -175,17 +162,18 @@ export default {
         req.numberOfAttending++;
       }
       api.CreateMinyan(req).then((res) => {
-        this.handleNewlyCreatedMinyan(res);
+        this.handleNewlyCreatedMinyan(res.data);
       });
     },
     reset() {
       this.$refs.form.reset();
     },
     handleNewlyCreatedMinyan(res) {
+      console.log(res);
       this.$router.push({
         name: "Minyan",
         params: {
-          id: res.data.id,
+          minyanid: res.data._id,
         },
       });
     },
