@@ -67,7 +67,10 @@
     <v-card class="d-flex flex-column align-center" v-if="isOrganizer">
       <v-row><v-btn>Cancel Minyan</v-btn></v-row>
     </v-card>
-    <v-card class="d-flex flex-column align-center" v-if="!isOrganizer">
+    <v-card
+      class="d-flex flex-column align-center"
+      v-if="!isOrganizer && !alreadyAttending"
+    >
       <v-form ref="form">
         <v-text-field
           v-model="form.attendeeName"
@@ -76,6 +79,9 @@
         ></v-text-field>
       </v-form>
       <v-btn @click="joinMinyan()">Join Minyan</v-btn></v-card
+    >
+    <v-card class="d-flex flex-column align-center" v-if="alreadyAttending"
+      ><v-btn>Leave Minyan</v-btn></v-card
     >
 
     <v-card class="d-flex flex-column align-center"
