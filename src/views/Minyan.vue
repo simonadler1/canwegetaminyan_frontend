@@ -80,8 +80,11 @@
       </v-form>
       <v-btn @click="joinMinyan()">Join Minyan</v-btn></v-card
     >
-    <v-card class="d-flex flex-column align-center" v-if="alreadyAttending"
-      ><v-btn>Leave Minyan</v-btn></v-card
+    <v-card
+      class="d-flex flex-column align-center"
+      v-if="alreadyAttending && !isOrganizer"
+    >
+      <v-btn @click="leaveMinyan()">Leave Minyan</v-btn></v-card
     >
 
     <v-card class="d-flex flex-column align-center"
@@ -133,6 +136,16 @@ export default {
       this.minyan.attending.push(this.form.attendeeName);
       api.UpdateMinyan(this.minyanId, this.minyan).then((minyan) => {
         localStorage.setItem("attendingMinyan", this.minyanId);
+        localStorage.setItem("attendingName", this.form.attendeeName);
+        this.minyan = minyan.data.data;
+      });
+    },
+    leaveMinyan() {
+      this.minyan.numberOfAttending--;
+      this.minyan.attending.splice(localStorage.getItem("attendingName"), 1);
+      api.UpdateMinyan(this.minyanId, this.minyan).then((minyan) => {
+        localStorage.removeItem("attendingMinyan", this.minyanId);
+        localStorage.removeItem("attendingName");
         this.minyan = minyan.data.data;
       });
     },
