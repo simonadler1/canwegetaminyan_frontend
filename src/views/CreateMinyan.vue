@@ -5,12 +5,17 @@
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-text-field
             v-model="form.organizerName"
-            label="Minyan Name"
+            label="Organizer Name"
             required
           ></v-text-field>
           <v-text-field
             v-model="form.organizerContact"
             label="Organizer Contact"
+            required
+          ></v-text-field>
+          <v-text-field
+            v-model="form.minyanName"
+            label="Minyan Name"
             required
           ></v-text-field>
           <v-text-field
@@ -136,11 +141,13 @@ export default {
       form: {
         organizerName: "",
         organizerContact: "",
+        minyanName: "",
         minyanLocation: "",
         minyanTime: "",
         minyanDate: "",
         email: "",
         IsOrganizerPartOfMinyan: false,
+        twoManMinyanMode: false,
       },
       menu: false,
       menu2: false,
@@ -152,16 +159,20 @@ export default {
       let req = {
         organizerName: form.organizerName,
         organizerContact: form.organizerContact,
+        minyanName: form.minyanName,
         minyanLocation: form.minyanLocation,
         minyanTime: form.minyanTime,
         minyanDate: form.minyanDate,
         numberOfAttending: 0,
         canceled: false,
+        twoManMinyanMode: form.twoManMinyanMode,
       };
       if (form.IsOrganizerPartOfMinyan) {
         req.numberOfAttending++;
+        req.attending = [`${form.organizerName}`];
       }
       api.CreateMinyan(req).then((res) => {
+        this.setUserAsOrganizerinLocalStorage(res.data.data._id);
         this.handleNewlyCreatedMinyan(res.data);
       });
     },
@@ -176,6 +187,10 @@ export default {
           minyanid: res.data._id,
         },
       });
+    },
+    setUserAsOrganizerinLocalStorage(minyanid) {
+      localStorage.setItem("isOrganizer", true);
+      localStorage.setItem("attendingMinyan", minyanid);
     },
   },
 };

@@ -12,4 +12,10 @@ export default {
   CreateMinyan(data) {
     return apiClient.post("/minyan", data);
   },
+  GetMinyan(id) {
+    return apiClient.get("/minyan/" + id);
+  },
+  UpdateMinyan(id, data) {
+    return apiClient.put("/minyan/" + id, data);
+  },
 };
