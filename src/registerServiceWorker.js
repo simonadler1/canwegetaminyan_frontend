@@ -31,16 +31,4 @@ if (process.env.NODE_ENV === "production") {
       console.error("Error during service worker registration:", error);
     },
   });
-
-  const subscription = register.pushManager.subscribe({
-    userVisibleOnly: true,
-    applicationServerKey: process.env.VAPID_PUBLIC,
-  });
-  fetch("/subscribe", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(subscription),
-  });
 }
