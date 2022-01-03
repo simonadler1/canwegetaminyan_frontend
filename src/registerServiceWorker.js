@@ -32,11 +32,11 @@ if (process.env.NODE_ENV === "production") {
     },
   });
 
-  const subscription = await register.pushManager.subscribe({
+  const subscription = register.pushManager.subscribe({
     userVisibleOnly: true,
     applicationServerKey: process.env.VAPID_PUBLIC,
   });
-  await fetch("/subscribe", {
+  fetch("/subscribe", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

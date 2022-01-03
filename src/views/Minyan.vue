@@ -117,7 +117,14 @@ export default {
       this.minyan = minyan.data.data;
     });
   },
-
+  mounted() {
+    //poll every 5 seconds to see if minyan is happening
+    setInterval(() => {
+      api.GetMinyan(this.$route.params.minyanid).then((minyan) => {
+        this.minyan = minyan.data.data;
+      });
+    }, 5000);
+  },
   data() {
     return {
       form: {

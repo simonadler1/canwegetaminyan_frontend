@@ -180,7 +180,6 @@ export default {
       this.$refs.form.reset();
     },
     handleNewlyCreatedMinyan(res) {
-      console.log(res);
       this.$router.push({
         name: "Minyan",
         params: {
