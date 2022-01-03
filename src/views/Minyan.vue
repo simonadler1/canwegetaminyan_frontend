@@ -137,6 +137,7 @@ export default {
       api.UpdateMinyan(this.minyanId, this.minyan).then((minyan) => {
         localStorage.setItem("attendingMinyan", this.minyanId);
         localStorage.setItem("attendingName", this.form.attendeeName);
+        this.alreadyAttending = true;
         this.minyan = minyan.data.data;
       });
     },
@@ -146,6 +147,7 @@ export default {
       api.UpdateMinyan(this.minyanId, this.minyan).then((minyan) => {
         localStorage.removeItem("attendingMinyan", this.minyanId);
         localStorage.removeItem("attendingName");
+        this.alreadyAttending = false;
         this.minyan = minyan.data.data;
       });
     },
